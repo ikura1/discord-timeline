@@ -9,7 +9,7 @@ client = discord.Client()
 def get_timeline_channel():
     channels = client.get_all_channels()
     for channel in channels:
-        print(str(channel), channel)
+        # print(str(channel), channel)
         if str(channel) == 'timeline':
             return channel
     return None
@@ -25,12 +25,22 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    send_user = message.author
+    if send_user == client.user:
+        return
+    # TODO: botが送信した発言への返信を元チャンネルに飛す
     channel = message.channel
     if str(channel).startswith('times_'):
+        # TODO: 送信者のアイコン表示
+        # TODO: bot名の変更
+        # TODO: botアイコンの変更
         timeline_channel = get_timeline_channel()
         if timeline_channel is None:
             timeline_channel = channel
-        await client.send_message(timeline_channel, message.content)
+        print(send_user.display_name)
+        user_name = send_user.display_name
+        content = f'{user_name}: {message.content}'
+        await client.send_message(timeline_channel, content)
     elif message.content.startswith('!test'):
         await client.send_message(message.channel, 'TESTだーよー')
 
