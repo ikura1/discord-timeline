@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import discord
 import asyncio
+import os
 
 client = discord.Client()
 
@@ -35,6 +36,9 @@ async def on_message(message):
 
 
 async def sample(message):
+    """
+    hogehoge
+    """
     if message.content.startswith('!test'):
         counter = 0
         tmp = await client.send_message(message.channel, 'Calculating messages...')
@@ -52,8 +56,61 @@ def run(token):
     client.run(token)
 
 
+def test_plain(hoge):
+    """Plain
+    hogehoge
+    """
+    return hoge
+
+
+def test_epytext(hoge):
+    """Epytext
+    hogehoge
+
+    @param hoge:
+    @return:
+    """
+    return hoge
+
+
+def test_restructuredtext(hoge):
+    """reStructuredText
+    hogehoge
+
+    :param hoge:
+    :return:
+    """
+    return hoge
+
+
+def test_numpy(hoge):
+    """Numpy
+    hogehoge
+
+    Parameters
+    ----------
+    hoge
+
+    Returns
+    -------
+
+    """
+    return hoge
+
+
+def test_google(hoge):
+    """Google
+    hogehoge
+
+    Args:
+        hoge:
+
+    Returns:
+
+    """
+    return hoge
+
+
 if __name__ == '__main__':
-    api_token = 'NDU1NzA3MjQ2MTczODgwMzIy.Df_6Mw.rmWPVQ71SmWzXRGlYjBny_FE2dI'
-    # timeline_channel = get_timeline_channel()
-    # f timeline_channel is not None:
+    api_token = os.environ['DISCORD_API_TOKEN']
     run(api_token)
