@@ -4,6 +4,7 @@ import asyncio
 import os
 
 client = discord.Client()
+mention_type = 0
 
 
 def get_timeline_channel():
@@ -25,24 +26,39 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    global mention_type
     send_user = message.author
     if send_user == client.user:
         return
     # TODO: botが送信した発言への返信を元チャンネルに飛す
     channel = message.channel
+    content = message.content
     if str(channel).startswith('times_'):
-        # TODO: 送信者のアイコン表示
         # TODO: bot名の変更
         # TODO: botアイコンの変更
+        # TODO: 前回の投稿と同じ場合、投稿を結合するか検討
+        em = None
         timeline_channel = get_timeline_channel()
         if timeline_channel is None:
             timeline_channel = channel
-        print(send_user.display_name)
-        user_name = send_user.display_name
-        content = f'{user_name}: {message.content}'
-        await client.send_message(timeline_channel, content)
-    elif message.content.startswith('!test'):
+        if mention_type == 0:
+            em = discord.Embed(description=content)  # , colour=0xDEADBF)
+            em.set_author(name=send_user.display_name, icon_url=send_user.avatar_url)
+            content = None
+        else:
+            user_name = send_user.display_name
+            content = f'{user_name}: {content}'
+        await client.send_message(timeline_channel, content, embed=em)
+    elif content.startswith('!test'):
         await client.send_message(message.channel, 'TESTだーよー')
+
+    elif content.startswith('!copy'):
+        em = discord.Embed(title=str(channel), description=content, colour=0xDEADBF)
+        em.set_author(name=send_user.display_name, icon_url=send_user.avatar_url)
+        await client.send_message(message.channel, embed=em)
+
+    elif content.startswith('!change'):
+        mention_type = 1 if mention_type == 0 else 0
 
 
 async def sample(message):
