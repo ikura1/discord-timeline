@@ -16,6 +16,13 @@ def get_timeline_channel():
     return None
 
 
+def get_avatar(user):
+    avatar = user.avatar_url
+    if not avatar:
+        avatar = user.default_avatar_url
+    return avatar
+
+
 @client.event
 async def on_ready():
     print('Logged in as')
@@ -43,7 +50,8 @@ async def on_message(message):
             timeline_channel = channel
         if mention_type == 0:
             em = discord.Embed(description=content)  # , colour=0xDEADBF)
-            em.set_author(name=send_user.display_name, icon_url=send_user.avatar_url)
+            avatar = get_avatar(send_user)
+            em.set_author(name=send_user.display_name, icon_url=avatar)
             content = None
         else:
             user_name = send_user.display_name
