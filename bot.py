@@ -2,6 +2,9 @@
 import discord
 import asyncio
 import os
+import re
+import urllib
+
 
 client = discord.Client()
 mention_type = 0
@@ -23,6 +26,30 @@ def get_avatar(user):
     return avatar
 
 
+def get_url(text):
+    url_list = []
+    re_url = re.compile(r'h?ttps?:\/\/.*')
+    for row in text.split('¥n'):
+        url_list.extend(re_url.findall(row))
+    return list(set(url_list))
+
+
+def is_url(url):
+    # TODO: urllibの確認
+    try:
+        urllib.request.urlopen(url)
+        return True
+    except:
+        return False
+
+
+def hoge(text=None):
+    """
+    Returns:
+    """
+    return
+
+
 @client.event
 async def on_ready():
     print('Logged in as')
@@ -41,9 +68,6 @@ async def on_message(message):
     channel = message.channel
     content = message.content
     if str(channel).startswith('times_'):
-        # TODO: bot名の変更
-        # TODO: botアイコンの変更
-        # TODO: 前回の投稿と同じ場合、投稿を結合するか検討
         em = None
         timeline_channel = get_timeline_channel()
         if timeline_channel is None:
@@ -52,11 +76,18 @@ async def on_message(message):
             em = discord.Embed(description=content)  # , colour=0xDEADBF)
             avatar = get_avatar(send_user)
             em.set_author(name=send_user.display_name, icon_url=avatar)
-            content = None
+            await client.send_message(timeline_channel, embed=em)
+            url_list = get_url(content)
+            if not url_list:
+                return
+            # TODO: urlが2度表示されるのを修正
+            for url in url_list:
+                await client.send_message(timeline_channel, url)
         else:
             user_name = send_user.display_name
             content = f'{user_name}: {content}'
-        await client.send_message(timeline_channel, content, embed=em)
+            await client.send_message(timeline_channel, content, embed=em)
+
     elif content.startswith('!test'):
         await client.send_message(message.channel, 'TESTだーよー')
 
@@ -67,6 +98,11 @@ async def on_message(message):
 
     elif content.startswith('!change'):
         mention_type = 1 if mention_type == 0 else 0
+
+
+async def change_avatar():
+    with open('some_image.jpg', 'rb') as f:
+        await client.edit_profile(avatar=f.read())
 
 
 async def sample(message):
