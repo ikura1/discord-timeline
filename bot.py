@@ -7,7 +7,6 @@ import urllib
 
 
 client = discord.Client()
-mention_type = 0
 
 
 def get_timeline_channel():
@@ -53,7 +52,6 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    global mention_type
     send_user = message.author
     if send_user == client.user:
         return
@@ -65,21 +63,17 @@ async def on_message(message):
         timeline_channel = get_timeline_channel()
         if timeline_channel is None:
             timeline_channel = channel
-        if mention_type == 0:
-            em = discord.Embed(description=content)  # , colour=0xDEADBF)
-            avatar = get_avatar(send_user)
-            em.set_author(name=send_user.display_name, icon_url=avatar)
-            await client.send_message(timeline_channel, embed=em)
-            url_list = get_url(content)
-            if not url_list:
-                return
-            # TODO: urlが2度表示されるのを修正
-            for url in url_list:
-                await client.send_message(timeline_channel, url)
-        else:
-            user_name = send_user.display_name
-            content = f'{user_name}: {content}'
-            await client.send_message(timeline_channel, content, embed=em)
+
+        em = discord.Embed(description=content)  # , colour=0xDEADBF)
+        avatar = get_avatar(send_user)
+        em.set_author(name=send_user.display_name, icon_url=avatar)
+        await client.send_message(timeline_channel, embed=em)
+        url_list = get_url(content)
+        if not url_list:
+            return
+        # TODO: urlが2度表示されるのを修正
+        for url in url_list:
+            await client.send_message(timeline_channel, url)
 
     elif content.startswith('!test'):
         await client.send_message(message.channel, 'TESTだーよー')
