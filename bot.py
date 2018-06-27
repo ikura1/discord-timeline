@@ -83,9 +83,6 @@ async def on_message(message):
         em.set_author(name=send_user.display_name, icon_url=send_user.avatar_url)
         await client.send_message(message.channel, embed=em)
 
-    elif content.startswith('!change'):
-        mention_type = 1 if mention_type == 0 else 0
-
 
 async def sample(message):
     """
