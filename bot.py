@@ -58,35 +58,28 @@ async def on_message(message):
     # TODO: botが送信した発言への返信を元チャンネルに飛す
     channel = message.channel
     content = message.content
-    if str(channel).startswith('times_'):
-        em = None
-        timeline_channel = get_timeline_channel()
-        if timeline_channel is None:
-            timeline_channel = channel
+    if not str(channel).startswith('times_'):
+        return
 
-        em = discord.Embed(description=content)  # , colour=0xDEADBF)
-        avatar = get_avatar(send_user)
-        em.set_author(name=send_user.display_name, icon_url=avatar)
-        await client.send_message(timeline_channel, embed=em)
-        url_list = get_url(content)
-        if not url_list:
-            return
-        # TODO: urlが2度表示されるのを修正
-        for url in url_list:
-            await client.send_message(timeline_channel, url)
+    timeline_channel = get_timeline_channel()
+    if timeline_channel is None:
+        return
 
-    elif content.startswith('!test'):
-        await client.send_message(message.channel, 'TESTだーよー')
-
-    elif content.startswith('!copy'):
-        em = discord.Embed(title=str(channel), description=content, colour=0xDEADBF)
-        em.set_author(name=send_user.display_name, icon_url=send_user.avatar_url)
-        await client.send_message(message.channel, embed=em)
+    em = discord.Embed(description=content)  # , colour=0xDEADBF)
+    avatar = get_avatar(send_user)
+    em.set_author(name=send_user.display_name, icon_url=avatar)
+    await client.send_message(timeline_channel, embed=em)
+    url_list = get_url(content)
+    if not url_list:
+        return
+    # TODO: urlが2度表示されるのを修正
+    for url in url_list:
+        await client.send_message(timeline_channel, url)
 
 
 async def sample(message):
     """
-    hogehoge
+    sample code
     """
     if message.content.startswith('!test'):
         counter = 0
