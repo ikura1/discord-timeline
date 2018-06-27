@@ -43,13 +43,6 @@ def is_url(url):
         return False
 
 
-def hoge(text=None):
-    """
-    Returns:
-    """
-    return
-
-
 @client.event
 async def on_ready():
     print('Logged in as')
@@ -100,11 +93,6 @@ async def on_message(message):
         mention_type = 1 if mention_type == 0 else 0
 
 
-async def change_avatar():
-    with open('some_image.jpg', 'rb') as f:
-        await client.edit_profile(avatar=f.read())
-
-
 async def sample(message):
     """
     hogehoge
@@ -124,61 +112,6 @@ async def sample(message):
 
 def run(token):
     client.run(token)
-
-
-def test_plain(hoge):
-    """Plain
-    hogehoge
-    """
-    return hoge
-
-
-def test_epytext(hoge):
-    """Epytext
-    hogehoge
-
-    @param hoge:
-    @return:
-    """
-    return hoge
-
-
-def test_restructuredtext(hoge):
-    """reStructuredText
-    hogehoge
-
-    :param hoge:
-    :return:
-    """
-    return hoge
-
-
-def test_numpy(hoge):
-    """Numpy
-    hogehoge
-
-    Parameters
-    ----------
-    hoge
-
-    Returns
-    -------
-
-    """
-    return hoge
-
-
-def test_google(hoge):
-    """Google
-    hogehoge
-
-    Args:
-        hoge:
-
-    Returns:
-
-    """
-    return hoge
 
 
 if __name__ == '__main__':
