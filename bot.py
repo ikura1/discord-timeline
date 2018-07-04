@@ -7,7 +7,7 @@ import urllib
 
 
 client = discord.Client()
-debug_mode = 0
+debug_mode = False
 
 
 def get_timeline_channel():
@@ -61,7 +61,10 @@ async def on_message(message):
     channel = message.channel
     content = message.content
     if content.startswith('!debug'):
-        debug_mode = 1
+        debug_mode = not(debug_mode)
+        message = 'DEBUG: ON' if debug_mode else 'DEBUG: OFF'
+        await client.send_message(channel, message)
+        return
     if not str(channel).startswith('times_ikura1') and debug_mode == 1:
         return
 
