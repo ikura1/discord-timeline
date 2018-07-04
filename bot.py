@@ -65,7 +65,7 @@ async def on_message(message):
         message = 'DEBUG: ON' if debug_mode else 'DEBUG: OFF'
         await client.send_message(channel, message)
         return
-    if not str(channel).startswith('times_ikura1') and debug_mode:
+    if str(channel).startswith('times_ikura1') and debug_mode is True:
         return
 
     timeline_channel = get_timeline_channel()
