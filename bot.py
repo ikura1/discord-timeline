@@ -7,6 +7,7 @@ import urllib
 
 
 client = discord.Client()
+debug_mode = 0
 
 
 def get_timeline_channel():
@@ -52,13 +53,16 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    global debug_mode
     send_user = message.author
     if send_user == client.user:
         return
     # TODO: botが送信した発言への返信を元チャンネルに飛す
     channel = message.channel
     content = message.content
-    if not str(channel).startswith('times_'):
+    if content.startswith('!debug'):
+        debug_mode = 1
+    if not str(channel).startswith('times_ikura1') and debug_mode == 1:
         return
 
     timeline_channel = get_timeline_channel()
