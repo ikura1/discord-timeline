@@ -7,7 +7,7 @@ import urllib
 
 
 client = discord.Client()
-debug_mode = False
+debug_mode = True
 
 
 def get_timeline_channel():
@@ -75,7 +75,11 @@ async def on_message(message):
     em = discord.Embed(description=content)  # , colour=0xDEADBF)
     avatar = get_avatar(send_user)
     em.set_author(name=send_user.display_name, icon_url=avatar)
-    await client.send_message(timeline_channel, embed=em)
+    if message.attachments:
+        attachment = message.attachments[0]
+        url = attachment.get('url')
+        em.set_image(url=url)
+
     url_list = get_url(content)
     if not url_list:
         return
