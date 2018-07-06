@@ -7,7 +7,7 @@ import urllib
 
 
 client = discord.Client()
-debug_mode = True
+debug_mode = False
 
 
 def get_timeline_channel():
@@ -65,11 +65,14 @@ async def on_message(message):
         message = 'DEBUG: ON' if debug_mode else 'DEBUG: OFF'
         await client.send_message(channel, message)
         return
+
     if str(channel).startswith('times_ikura1') and debug_mode is True:
+        print('debug_mode: now')
         return
 
     timeline_channel = get_timeline_channel()
     if timeline_channel is None:
+        print('not timeline channel')
         return
 
     em = discord.Embed(description=content)  # , colour=0xDEADBF)
@@ -80,6 +83,7 @@ async def on_message(message):
         url = attachment.get('url')
         em.set_image(url=url)
 
+    await client.send_message(timeline_channel, embed=em)
     url_list = get_url(content)
     if not url_list:
         return
