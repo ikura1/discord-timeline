@@ -75,6 +75,10 @@ async def on_message(message):
         print('not timeline channel')
         return
 
+    if channel.startswith('times'):
+        print('no times channel')
+        return
+
     em = discord.Embed(description=content)  # , colour=0xDEADBF)
     avatar = get_avatar(send_user)
     em.set_author(name=send_user.display_name, icon_url=avatar)
