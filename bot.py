@@ -75,7 +75,7 @@ async def on_message(message):
         print('not timeline channel')
         return
 
-    if channel.startswith('times'):
+    if not channel.startswith('times'):
         print('no times channel')
         return
 
