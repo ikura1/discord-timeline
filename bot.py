@@ -4,7 +4,7 @@ import asyncio
 import os
 import re
 import urllib
-from games.ligegame import Game
+from games.lifegame import Game
 
 
 client = discord.Client()
