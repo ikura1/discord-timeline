@@ -42,16 +42,16 @@ class Game(object):
         conditions = [2, 3] if value else [3]
         return int(sum_around in conditions)
 
-    def get_around_indexs(self, index):
+    def get_around_indexes(self, index):
         cells = [-self.field_length, self.field_length]
-        if index % self.field_length != 1:
+        if index % self.field_length != 0:
             cells.extend([-self.field_length - 1, -1, self.field_length - 1])
         if (index + 1) % self.field_length != 0:
             cells.extend([-self.field_length + 1, 1, self.field_length + 1])
         return list(map(lambda x: x + index, cells))
 
     def around(self, index):
-        indexes = self.get_around_indexs(index)
+        indexes = self.get_around_indexes(index)
         return [self.get_cell(i) for i in indexes]
 
     def get_cell(self, index):
