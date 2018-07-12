@@ -4,10 +4,22 @@ import asyncio
 import os
 import re
 import urllib
+from games.ligegame import Game
 
 
 client = discord.Client()
 debug_mode = False
+
+
+async def game(channel):
+    life_game = Game(12)
+    message = await client.send_message(channel, life_game.as_text())
+    for _ in range(100):
+        if sum(life_game.field) == 0:
+            break
+        life_game.next_turn()
+        await asyncio.sleep(1)
+        await client.edit_message(message, life_game.as_text())
 
 
 def get_timeline_channel():
@@ -60,8 +72,11 @@ async def on_message(message):
     # TODO: botが送信した発言への返信を元チャンネルに飛す
     channel = message.channel
     content = message.content
+    if content.startswith('!game'):
+        await game(channel)
+        return
     if content.startswith('!debug'):
-        debug_mode = not(debug_mode)
+        debug_mode = not debug_mode
         message = 'DEBUG: ON' if debug_mode else 'DEBUG: OFF'
         await client.send_message(channel, message)
         return
