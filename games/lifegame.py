@@ -19,7 +19,7 @@ class Game(object):
     def next_turn(self):
         new_field = []
         for i, cell in enumerate(self.field):
-            value = self.is_alive(i, cell)
+            value = self.is_alive(i)
             new_field.append(value)
         self.field = new_field
 
@@ -36,7 +36,8 @@ class Game(object):
                      for i in range(self.field_length)]
         return '\n'.join(show_rows)
 
-    def is_alive(self, index, value):
+    def is_alive(self, index):
+        value = self.field[index]
         sum_around = sum(self.around(index))
         conditions = [2, 3] if value else [3]
         return int(sum_around in conditions)
