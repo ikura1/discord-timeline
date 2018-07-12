@@ -18,7 +18,7 @@ async def game(channel):
         if sum(life_game.field) == 0:
             break
         life_game.next_turn()
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         await client.edit_message(message, life_game.as_text())
 
 
