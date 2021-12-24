@@ -13,8 +13,8 @@ class Game(object):
         self.field_length = field_length
         self.cell_length = field_length ** 2
         self.field = randint(0, 2, self.cell_length)
-        self.alive = emoji.emojize(':sun_with_face:', use_aliases=True)
-        self.dead = emoji.emojize(':new_moon_with_face:', use_aliases=True)
+        self.alive = emoji.emojize(":sun_with_face:", use_aliases=True)
+        self.dead = emoji.emojize(":new_moon_with_face:", use_aliases=True)
 
     def next_turn(self):
         new_field = []
@@ -30,11 +30,12 @@ class Game(object):
             time.sleep(0.5)
 
     def as_text(self):
-        show_cells = [self.alive if v else self.dead
-                      for v in self.field]
-        show_rows = [''.join(show_cells[i * self.field_length: (i + 1) * self.field_length])
-                     for i in range(self.field_length)]
-        return '\n'.join(show_rows)
+        show_cells = [self.alive if v else self.dead for v in self.field]
+        show_rows = [
+            "".join(show_cells[i * self.field_length : (i + 1) * self.field_length])
+            for i in range(self.field_length)
+        ]
+        return "\n".join(show_rows)
 
     def is_alive(self, index):
         value = self.field[index]
@@ -58,6 +59,6 @@ class Game(object):
         return self.field[index] if 0 <= index < self.cell_length else 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     game = Game(14)
     game.run()
