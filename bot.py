@@ -13,13 +13,13 @@ debug_mode = False
 
 async def game(channel):
     life_game = Game(12)
-    message = await client.send_message(channel, life_game.as_text())
+    message = await channel.send(life_game.as_text())
     for _ in range(100):
         if sum(life_game.field) == 0:
             break
         life_game.next_turn()
         await asyncio.sleep(0.5)
-        await client.edit_message(message, life_game.as_text())
+        await message.edit(content=life_game.as_text())
 
 
 def get_timeline_channel():
@@ -78,7 +78,7 @@ async def on_message(message):
     if content.startswith("!debug"):
         debug_mode = not debug_mode
         message = "DEBUG: ON" if debug_mode else "DEBUG: OFF"
-        await client.send_message(channel, message)
+        await channel.send(message)
         return
 
     if str(channel).startswith("times_ikura1") and debug_mode is True:
@@ -102,13 +102,13 @@ async def on_message(message):
         url = attachment.get("url")
         em.set_image(url=url)
 
-    await client.send_message(timeline_channel, embed=em)
+    await timeline_channel.send(embed=em)
     url_list = get_url(content)
     if not url_list:
         return
     # TODO: urlが2度表示されるのを修正
     for url in url_list:
-        await client.send_message(timeline_channel, url)
+        await timeline_channel.send(url)
 
 
 async def sample(message):
@@ -117,15 +117,15 @@ async def sample(message):
     """
     if message.content.startswith("!test"):
         counter = 0
-        tmp = await client.send_message(message.channel, "Calculating messages...")
+        tmp = await message.channel.send("Calculating messages...")
         async for log in client.logs_from(message.channel, limit=100):
             if log.author == message.author:
                 counter += 1
 
-        await client.edit_message(tmp, "You have {} messages.".format(counter))
+        await tmp.edit(content="You have {} messages.".format(counter))
     elif message.content.startswith("!sleep"):
         await asyncio.sleep(5)
-        await client.send_message(message.channel, "Done sleeping")
+        await message.channel.send("Done sleeping")
 
 
 def run(token):
